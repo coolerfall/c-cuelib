@@ -150,10 +150,11 @@ static void parse_performer(CueSheet *cue_sheet, const char *input)
 }
 
 /* parse label FILE */
-static void parse_file(CueSheet *cue_sheet, const char *input)
+static void parse_file(CueSheet *cue_sheet, const char *input, const char *filename)
 {
 	int len = strlen(input);
 	char buf[len];
+	char real_path[1024];
 
 	if (!start_with(input, "FILE") || !end_with(input, "WAVE"))
 	{
@@ -169,7 +170,16 @@ static void parse_file(CueSheet *cue_sheet, const char *input)
 		input = buf;
 	}
 
-	strcpy(cue_sheet->filename, input);
+	/* get the real path for cue file */
+	realpath(filename, real_path);
+	int index = last_index_of(real_path, "/");
+	if (index < 0)
+	{
+		return;
+	}
+
+	substring(cue_sheet->filename, real_path, 0, index + 1);
+	strcat(cue_sheet->filename, input);
 }
 
 /* parse label TITLE */
@@ -204,7 +214,10 @@ static void parse_title(CueSheet *cue_sheet, const char *input)
 	}
 }
 
-/* parse label TRACK */
+/**
+ * Parse label TRACK.
+ * First track number may be > 1, but all others must be sequential.
+ */
 static void parse_track(CueSheet *cue_sheet, const char *input)
 {
 	int len = strlen(input);
@@ -225,7 +238,7 @@ static void parse_track(CueSheet *cue_sheet, const char *input)
 	track_data->track_index = track_index;
 }
 
-/* calculate mm:ss:ff to millisecond */
+/* calculate mm:ss:ff to millisecond, ff = frames (75 per second) */
 static int calculate_duration(const char *input)
 {
 	int len = strlen(input);
@@ -291,6 +304,12 @@ CueSheet *parse_cue(const char *filename)
 	}
 
 	CueSheet *cue_sheet = malloc(sizeof(CueSheet));
+	if (!cue_sheet)
+	{
+		fclose(fp);
+		fp = NULL;
+		return NULL;
+	}
 	memset(cue_sheet, 0, sizeof(CueSheet));
 
 	while (read_line(buffer, file_size, fp) != NULL)
@@ -299,7 +318,7 @@ CueSheet *parse_cue(const char *filename)
 		{
 		case 'f':
 		case 'F':
-			parse_file(cue_sheet, buffer);
+			parse_file(cue_sheet, buffer, filename);
 			break;
 
 		case 'i':
@@ -335,8 +354,15 @@ CueSheet *parse_cue(const char *filename)
 				break;
 			}
 			break;
+
+		default:
+			printf("unknown");
+			break;
 		}
 	}
+
+	fclose(fp);
+	fp = NULL;
 
 	return cue_sheet;
 }
@@ -350,6 +376,11 @@ CueSheet *parse_cue(const char *filename)
  */
 char *get_string_metadata(CueSheet *cue_sheet, int index, MetaDataField filed)
 {
+	if (!cue_sheet)
+	{
+		return NULL;
+	}
+
 	TrackData *track_data = &cue_sheet->tracks_data[index];
 
 	switch (filed)
@@ -390,12 +421,17 @@ char *get_string_metadata(CueSheet *cue_sheet, int index, MetaDataField filed)
 /**
  * Convenience function for getting string metadata from the cue sheet.
  *
- * @param cue_sheet poniter to CueSheet structure
- * @param index     the index in tracks_data
- * @param filed     meta data filed
+ * @param cue_sheet   poniter to CueSheet structure
+ * @param track_index the index in tracks_data
+ * @param filed       meta data filed
  */
 int get_int_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
 {
+	if (!cue_sheet)
+	{
+		return -1;
+	}
+
 	TrackData *track_data = &cue_sheet->tracks_data[track_index];
 	TrackData *next_track_data;
 	int index0 = track_data->index0;
@@ -405,10 +441,10 @@ int get_int_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
 
 	switch (filed)
 	{
-	case TRACK_NUM:
+	case TRACK_TOTAL:
 		return cue_sheet->total_track;
 
-	case TRACK_INDEX:
+	case TRACK_NUM:
 		return track_data->track_index;
 
 	case TRACK_START:

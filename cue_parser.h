@@ -15,7 +15,7 @@ typedef struct TrackData {
 	char title[1024];
 	char performer[1024];
 	char date[64];
-	char filename[1024];
+	char filename[1024];	/* absolute file path */
 	int index0;				/* index0 in millisecond */
 	int index1;				/* index1 in millisecond */
 } TrackData;
@@ -26,7 +26,7 @@ typedef struct CueSheet {
 	char comment[1024];
 	char date[64];
 	char genre[512];
-	char filename[1024];
+	char filename[1024];	/* absolute file path */
 	int total_track;
 
 	TrackData tracks_data[128];
@@ -44,7 +44,7 @@ typedef enum MetaDataField {
 	GENRE,
 	TRACK_DATE,
 	TRACK_NUM,
-	TRACK_INDEX,
+	TRACK_TOTAL,
 	TRACK_PERFORMER,
 	TRACK_TITLE,
 	TRACK_START,

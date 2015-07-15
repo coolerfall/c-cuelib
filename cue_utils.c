@@ -96,6 +96,50 @@ bool end_with(const char *src, const char *suffix)
 }
 
 /**
+ * To get the index when sub string first appear in src.
+ *
+ * @param src src string
+ * @param sub the string to search
+ */
+int index_of(const char *src, const char *sub)
+{
+	char *result = strstr(src, sub);
+
+	return result ? strlen(src) - strlen(result) : -1;
+}
+
+/**
+ * To get the index when need string last appear in src.
+ *
+ * @param src  src string
+ * @param need the string to search
+ */
+int last_index_of(const char *src, const char *need)
+{
+	int i;
+	const char *p = src + strlen(src);
+	size_t len = strlen(need);
+	char *buf;
+
+	for(i = 0; i < strlen(src); i ++)
+	{
+		buf = strchr(p --, *need);
+		if (!buf)
+		{
+			continue;
+		}
+
+		if (strncmp(buf, need, len) == 0)
+		{
+			
+			return strlen(src) - strlen((char *)buf);
+		}
+	}
+
+	return -1;
+}
+
+/**
  * Remove space from string at the beginning or end.
  *
  * @param src pointer to source string 
