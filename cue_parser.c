@@ -370,18 +370,18 @@ CueSheet *parse_cue(const char *filename)
 /**
  * Convenience function for getting string metadata from the cue sheet.
  *
- * @param cue_sheet poniter to CueSheet structure
- * @param index     the index in tracks_data
- * @param filed     meta data filed
+ * @param cue_sheet   poniter to CueSheet structure
+ * @param track_index the index in tracks_data
+ * @param filed      meta data filed
  */
-char *get_string_metadata(CueSheet *cue_sheet, int index, MetaDataField filed)
+char *get_string_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
 {
-	if (!cue_sheet)
+	if (!cue_sheet || track_index >= cue_sheet->total_track)
 	{
 		return NULL;
 	}
 
-	TrackData *track_data = &cue_sheet->tracks_data[index];
+	TrackData *track_data = &cue_sheet->tracks_data[track_index];
 
 	switch (filed)
 	{
@@ -427,7 +427,7 @@ char *get_string_metadata(CueSheet *cue_sheet, int index, MetaDataField filed)
  */
 int get_int_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
 {
-	if (!cue_sheet)
+	if (!cue_sheet || track_index >= cue_sheet->total_track)
 	{
 		return -1;
 	}
