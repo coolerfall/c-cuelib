@@ -22,12 +22,7 @@
 long get_file_size(const char *filename)
 {
 	struct stat statbuf;
-	if (stat(filename, &statbuf) < 0)
-	{
-		return -1;
-	}
-
-	return statbuf.st_size;
+	return stat(filename, &statbuf) < 0 ? -1 : statbuf.st_size;
 }
 
 /**

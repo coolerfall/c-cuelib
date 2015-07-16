@@ -233,9 +233,9 @@ static void parse_track(CueSheet *cue_sheet, const char *input)
 
 	cue_sheet->total_track ++;
 
-	int track_index = atoi(input);
+	int track_num = atoi(input);
 	TrackData *track_data = &cue_sheet->tracks_data[cue_sheet->total_track - 1];
-	track_data->track_index = track_index;
+	track_data->track_num = track_num;
 }
 
 /* calculate mm:ss:ff to millisecond, ff = frames (75 per second) */
@@ -371,8 +371,9 @@ CueSheet *parse_cue(const char *filename)
  * Convenience function for getting string metadata from the cue sheet.
  *
  * @param cue_sheet   poniter to CueSheet structure
- * @param track_index the index in tracks_data
- * @param filed      meta data filed
+ * @param track_index the index in tracks_data, if want to get global meta data, this
+ *                    param just set to -1.
+ * @param filed       meta data filed
  */
 char *get_string_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
 {
@@ -422,7 +423,8 @@ char *get_string_metadata(CueSheet *cue_sheet, int track_index, MetaDataField fi
  * Convenience function for getting string metadata from the cue sheet.
  *
  * @param cue_sheet   poniter to CueSheet structure
- * @param track_index the index in tracks_data
+ * @param track_index the index in tracks_data, if want to get global meta data, this
+ *                    param just set to -1.
  * @param filed       meta data filed
  */
 int get_int_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
@@ -445,7 +447,7 @@ int get_int_metadata(CueSheet *cue_sheet, int track_index, MetaDataField filed)
 		return cue_sheet->total_track;
 
 	case TRACK_NUM:
-		return track_data->track_index;
+		return track_data->track_num;
 
 	case TRACK_START:
 		return index1 ? index1 : index0;

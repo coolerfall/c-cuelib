@@ -11,7 +11,7 @@
 #define	__CUE_PARSER_H__
 
 typedef struct TrackData {
-	int track_index;
+	int track_num;
 	char title[1024];
 	char performer[1024];
 	char date[64];
