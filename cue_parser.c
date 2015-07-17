@@ -21,7 +21,7 @@ static void parse_comment(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "COMMENT"))
+	if (!starts_with(input, "COMMENT"))
 	{
 		return;
 	}
@@ -44,7 +44,7 @@ static void parse_date(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "DATE"))
+	if (!starts_with(input, "DATE"))
 	{
 		return;
 	}
@@ -70,7 +70,7 @@ static void parse_genre(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "GENRE"))
+	if (!starts_with(input, "GENRE"))
 	{
 		return;
 	}
@@ -87,7 +87,7 @@ static void parse_rem(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "REM"))
+	if (!starts_with(input, "REM"))
 	{
 		return;
 	}
@@ -123,7 +123,7 @@ static void parse_performer(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "PERFORMER"))
+	if (!starts_with(input, "PERFORMER"))
 	{
 		return;
 	}
@@ -154,9 +154,9 @@ static void parse_file(CueSheet *cue_sheet, const char *input, const char *filen
 {
 	int len = strlen(input);
 	char buf[len];
-	char real_path[1024];
+	char real_path[1024] = {0};
 
-	if (!start_with(input, "FILE") || !end_with(input, "WAVE"))
+	if (!starts_with(input, "FILE") || !ends_with(input, "WAVE"))
 	{
 		return;
 	}
@@ -188,7 +188,7 @@ static void parse_title(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "TITLE"))
+	if (!starts_with(input, "TITLE"))
 	{
 		return;
 	}
@@ -223,7 +223,7 @@ static void parse_track(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "TRACK") || !end_with(input, "AUDIO"))
+	if (!starts_with(input, "TRACK") || !ends_with(input, "AUDIO"))
 	{
 		return;
 	}
@@ -263,7 +263,7 @@ static void parse_index(CueSheet *cue_sheet, const char *input)
 	int len = strlen(input);
 	char buf[len];
 
-	if (!start_with(input, "INDEX") || strlen(input) < 8)
+	if (!starts_with(input, "INDEX") || strlen(input) < 8)
 	{
 		return;
 	}
@@ -273,13 +273,13 @@ static void parse_index(CueSheet *cue_sheet, const char *input)
 
 	TrackData *track_data = &cue_sheet->tracks_data[cue_sheet->total_track - 1];
 
-	if (start_with(input, "00"))
+	if (starts_with(input, "00"))
 	{
 		substring(buf, input, strlen("00"), len);
 		input = trim(buf);
 		track_data->index0 = calculate_duration(input);
 	}
-	else if (start_with(input, "01"))
+	else if (starts_with(input, "01"))
 	{
 		substring(buf, input, strlen("01"), len);
 		input = trim(buf);

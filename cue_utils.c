@@ -63,7 +63,7 @@ void substring(char *dest, const char *src, int start, int end)
  * @param  prefix prefix string poniter
  * @return        ture if start with specified string, otherwise return false
  */
-bool start_with(const char *src, const char *prefix)
+bool starts_with(const char *src, const char *prefix)
 {
 	int len = strlen(prefix);
 	char buf[len];
@@ -80,7 +80,7 @@ bool start_with(const char *src, const char *prefix)
  * @param  suffix suffix string poniter
  * @return        ture if end with specified string, otherwise return false
  */
-bool end_with(const char *src, const char *suffix)
+bool ends_with(const char *src, const char *suffix)
 {
 	int len = strlen(suffix);
 	char buf[len];

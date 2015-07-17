@@ -28,8 +28,5 @@ int main(int argc, char const *argv[])
 			get_int_metadata(cue_sheet, i, TRACK_END));
 	}
 
-	char *src = "thisisoriginral";
-	printf("index: %d\n", last_index_of(src, "ri"));
-
 	return 0;
 }
