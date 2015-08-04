@@ -10,27 +10,7 @@
 #ifndef	__CUE_PARSER_H__
 #define	__CUE_PARSER_H__
 
-typedef struct TrackData {
-	int track_num;
-	char title[1024];
-	char performer[1024];
-	char date[64];
-	char filename[1024];	/* absolute file path */
-	int index0;				/* index0 in millisecond */
-	int index1;				/* index1 in millisecond */
-} TrackData;
-
-typedef struct CueSheet {
-	char title[1024];
-	char performer[1024];
-	char comment[1024];
-	char date[64];
-	char genre[512];
-	char filename[1024];	/* absolute file path */
-	int total_track;
-
-	TrackData tracks_data[128];
-} CueSheet;
+#include "cue_common.h"
 
 /**
  * A enumeration type defination for MetaDataField

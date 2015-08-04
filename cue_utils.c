@@ -95,6 +95,8 @@ bool ends_with(const char *src, const char *suffix)
  *
  * @param src src string
  * @param sub the string to search
+ * @return    the index of substring in source string, 
+ *            otherwise return -1 if not exists
  */
 int index_of(const char *src, const char *sub)
 {
@@ -108,6 +110,8 @@ int index_of(const char *src, const char *sub)
  *
  * @param src  src string
  * @param need the string to search
+ * @return     the index of substring in source string, 
+ *             otherwise return -1 if not exists
  */
 int last_index_of(const char *src, const char *need)
 {
@@ -126,7 +130,6 @@ int last_index_of(const char *src, const char *need)
 
 		if (strncmp(buf, need, len) == 0)
 		{
-			
 			return strlen(src) - strlen((char *)buf);
 		}
 	}
@@ -137,7 +140,7 @@ int last_index_of(const char *src, const char *need)
 /**
  * Remove space from string at the beginning or end.
  *
- * @param src pointer to source string 
+ * @param src pointer to source string
  */
 char *trim(char *src)
 {
