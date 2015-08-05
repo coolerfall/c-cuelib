@@ -8,7 +8,6 @@
  */
 
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "cue_utils.h"
@@ -148,12 +147,12 @@ char *trim(char *src)
 	int len = strlen(src);
 	int start = 0, end = len - 1;
 
-	while (start < end && src[start] <= ' ' && src[start] != 0)
+	while (start < end && (src[start] == ' ' || src[start] == '\t'))
 	{
 		start ++;
 	}
 
-	while (end >= start && src[end] <= ' ' && src[end] != 0)
+	while (end >= start && (src[end] <= ' ' || src[end] == '\t'))
 	{
 		end --;
 	}
@@ -180,4 +179,15 @@ char *read_line(char *buf, int bufsize, FILE *stream)
 	}
 
 	return result;
+}
+
+/**
+ * Write string into file.
+ *
+ * @param intput the string to write
+ * @param fp     pointer to file
+ */
+void write_string(const char *input, FILE *fp)
+{
+	fwrite(input, strlen(input), 1, fp);
 }

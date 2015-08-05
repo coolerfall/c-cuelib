@@ -11,6 +11,7 @@
 #define	__CUE_UTILS_H__
 
 #include <stdio.h>
+#include <stdbool.h>
 
 long get_file_size(const char *filename);
 void substring(char *dest, const char *src, int start, int end);
@@ -20,5 +21,6 @@ int index_of(const char *src, const char *sub);
 int last_index_of(const char *src, const char *sub);
 char *trim(char *src);
 char *read_line(char *buf, int bufsize, FILE *stream);
+void write_string(const char *input, FILE *fp);
 
 #endif

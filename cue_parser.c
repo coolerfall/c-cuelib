@@ -290,7 +290,7 @@ static void parse_index(CueSheet *cue_sheet, const char *input)
 /**
  * Parse cue file into cue sheet.
  *
- * @param filename the filename of cue file
+ * @param filename the filename(absolute file path) of cue file
  */
 CueSheet *parse_cue(const char *filename)
 {
@@ -350,13 +350,13 @@ CueSheet *parse_cue(const char *filename)
 				break;
 
 			default:
-				printf("unknown");
+				printf("unknown symbol\n");
 				break;
 			}
 			break;
 
 		default:
-			printf("unknown");
+			printf("unknown symbol\n");
 			break;
 		}
 	}

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include "cue_parser.h"
+#include "cue_serializer.h"
 
 int main(int argc, char const *argv[])
 {
@@ -27,6 +28,8 @@ int main(int argc, char const *argv[])
 			get_int_metadata(cue_sheet, i, TRACK_START),
 			get_int_metadata(cue_sheet, i, TRACK_END));
 	}
+
+	serialize_cue(cue_sheet, "./ser.cue");
 
 	return 0;
 }
